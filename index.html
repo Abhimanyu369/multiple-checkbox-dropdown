@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    .selectDropdown {
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+      padding: 2px;
+    }
+
+    .multiselect {
+      width: 200px;
+    }
+
+    .overSelect {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    #checkboxes {
+      display: none;
+      border: 1px #dadada solid;
+      border-radius: 5px;
+      padding: 2px;
+    }
+
+    #checkboxes label {
+      display: block;
+    }
+
+    #checkboxes label:hover {
+      background-color: #1e90ff;
+    }
+  </style>
+</head>
+<body>
+  <form>
+  <div class="multiselect">
+
+    <div class="selectBox" id="selectBox">
+      <p class="selectDropdown"><span class="chkb_v">Select Album</span> &#9662;</p>
+    </div>
+    <div id="checkboxes">
+      <label for="one">
+        <input type="checkbox" id="one" name="chkb" value="one"/>First checkbox</label>
+      <label for="two">
+        <input type="checkbox" id="two" name="chkb" value="two"/>Second checkbox</label>
+      <label for="three">
+        <input type="checkbox" id="three" name="chkb" value="three"/>Third checkbox</label>
+    </div>
+  </div>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script>
+  var expanded = false;
+
+  function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+      checkboxes.style.display = "block";
+      expanded = true;
+    } else {
+      checkboxes.style.display = "none";
+      expanded = false;
+    }
+
+    checkbox_update();
+  }
+
+  function checkbox_update() {
+    var yourArray = [];
+    $("input:checkbox[name='chkb']:checked").each(function(){
+        yourArray.push($(this).val());
+    });
+    $(".chkb_v").html( yourArray.length + " Selected");
+    /*if(yourArray.length === 1) {
+      $(".chkb_v").html(yourArray);
+    } else {
+      $(".chkb_v").html( yourArray.length + " Selected");
+    }*/
+    //console.log(yourArray);
+  }
+
+  $(document).ready(function(){
+    checkbox_update();
+  });
+
+  window.addEventListener('click', function(e){
+    if (document.getElementById('selectBox').contains(e.target)){
+      // Clicked in box
+      showCheckboxes();
+    } else if(document.getElementById('checkboxes').contains(e.target)) {
+      checkbox_update();
+    } else {
+      // Clicked outside the box
+      var checkboxes = document.getElementById("checkboxes");
+      checkboxes.style.display = "none";
+      expanded = false;
+      checkbox_update();
+    }
+  });
+
+</script>
+</body>
+</html>
